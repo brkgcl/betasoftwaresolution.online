@@ -1,0 +1,53 @@
+version: '3.4'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      # - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - backend_service_1
+      - backend_service_2
+      - backend_service_3
+    networks:
+      - backend_network
+
+
+
+  backend_service_1:
+    image: bguclu/service_1
+    container_name: backend_service_1
+    restart: unless-stopped
+    ports:
+      - "4001"
+    networks:
+      - backend_network
+
+  backend_service_2:
+    image: bguclu/service_2
+    container_name: backend_service_2
+    restart: unless-stopped
+    ports:
+      - "4002"
+    networks:
+      - backend_network
+
+  backend_service_3:
+    image: bguclu/service_3
+    container_name: backend_service_3
+    restart: unless-stopped
+    ports:
+      - "4003"
+    networks:
+      - backend_network
+
+        
+networks:
+  backend_network:
+    driver: bridge
+
+  
